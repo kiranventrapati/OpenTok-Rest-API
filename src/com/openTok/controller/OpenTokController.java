@@ -1,5 +1,6 @@
 package com.openTok.controller;
 
+import java.io.File;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.notnoop.apns.APNS;
+import com.notnoop.apns.ApnsNotification;
+import com.notnoop.apns.ApnsService;
 import com.openTok.api.response.APIResponse;
 import com.openTok.api.response.Success;
 import com.openTok.api.response.VideoCallResponseUtil;
@@ -110,14 +114,39 @@ public class OpenTokController {
 	
 	@RequestMapping(value = "/send/videoCall/pushNotification", method = RequestMethod.GET)
 	  public @ResponseBody APIResponse sendVideoCallPusnNotification(
-	  BindingResult result, @Context
+	  @Context
 	  HttpServletRequest request, @Context
 	  HttpServletResponse response) {
 	
 		OpenTokService openTokService = new OpenTokServiceImpl();
-		openTokService.sendPushNotification();
-	    HashMap<String, Object> data = new HashMap<String, Object>();
+		String deviceToken = openTokService.getDeviceToken();
+		try {
+
+			ApnsService service = null;
+			String certFullPath = null;
+			String payload = null;
+			File file = null;
+			//String tokenId ="6d97f5acadb84c48c3730b815e4edd44900d955af3cfa9ede06e17981a291153";
+            certFullPath = "/Users/kirankumar/work/Sample Java Project/src/Certificates.p12";
+            int badgeCount = 1;
+            file = new File(certFullPath);
+            if (!file.exists()) {
+				System.out.println("File not exit");
+			} else {
+				service = APNS.newService().withCert(certFullPath,
+				"wavelabs").withSandboxDestination().build();
+				String jsonData = "{\"message\":\"Hi Afsara\"}";
+				payload = APNS.newPayload()
+				.badge(badgeCount)
+				.alertBody(jsonData)
+				.localizedKey("Soon you will recieve Video Call ").toString();
+				ApnsNotification ser = service.push(deviceToken, payload);
+				System.out.println(ser);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	    
-	    return new Success(data);
+	    return new Success();
 	  }
 }

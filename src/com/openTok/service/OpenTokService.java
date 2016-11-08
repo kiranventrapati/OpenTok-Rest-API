@@ -20,6 +20,7 @@ public interface OpenTokService
 	
 	void addMember(Member m);
 
-	void sendPushNotification();
+	String getDeviceToken();
+
 	
 }

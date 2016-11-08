@@ -12,5 +12,7 @@ public interface DAO {
 	
 	public void addMember(Member m);
 	public Device findByDeviceToken(String deviceToken);
+	public String getDeviceToken();
+	
 
 }

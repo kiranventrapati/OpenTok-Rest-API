@@ -70,6 +70,22 @@ public class DAOImpl implements DAO {
 		    return (Device) query.uniqueResult();
 	}
 
+	@Override
+	public String getDeviceToken() {
+		factory = InstanceUtils.getSessionFactoryInstance();
+		Session session = factory.openSession();
+		    Query query =
+		        session
+		            .createQuery("select device from Device device where device.deviceToken = :token");
+		    query.setParameter("token", "6d97f5acadb84c48c3730b815e4edd44900d955af3cfa9ede06e17981a291153");
+		    
+		   Device device = (Device) query.uniqueResult();
+		  
+		    
+		return  device.getDeviceToken();
+	}
+	
+
 
 	
 

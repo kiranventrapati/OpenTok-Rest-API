@@ -80,10 +80,13 @@ public class OpenTokServiceImpl implements OpenTokService {
 	}
 
 	@Override
-	public void sendPushNotification() {
-		
+	public String getDeviceToken() {
+		DAO dao = DAOFactory.daoImplInstance();
+		String deviceToken = dao.getDeviceToken();
+		return deviceToken;
 		
 	}
+
 
 	
 
