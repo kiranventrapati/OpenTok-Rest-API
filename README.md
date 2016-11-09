@@ -1,2 +1,2 @@
 # OpenTok-Rest-API
-All API for get video Call support
+API's for video Call support
