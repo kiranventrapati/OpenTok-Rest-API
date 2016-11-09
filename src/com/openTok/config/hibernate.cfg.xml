@@ -19,7 +19,7 @@
 
 		<mapping resource="com/openTok/config/hibernate.hbm.xml" />
 		<mapping resource="com/openTok/config/Device.hbm.xml" />
-        <mapping resource="com/openTok/config/member.hbm.xml" />
+		<mapping resource="com/openTok/config/member.hbm.xml" />
 	</session-factory>
 
 </hibernate-configuration>

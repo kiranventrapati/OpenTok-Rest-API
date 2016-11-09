@@ -1,5 +1,10 @@
 package com.openTok.daoImpl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,36 +22,37 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public VideoCall videoCalldetails(VideoCall videoCall) {
-    factory = InstanceUtils.getSessionFactoryInstance();
-	Session session = factory.openSession();
-	Transaction tx = session.beginTransaction();
-	session.save(videoCall);
-	tx.commit();
-	
-	return videoCall;
+		factory = InstanceUtils.getSessionFactoryInstance();
+		Session session = factory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.save(videoCall);
+		tx.commit();
+
+		return videoCall;
 	}
 
 	@Override
 	public VideoCall incomingCall(long videoCallId) {
-		 factory = InstanceUtils.getSessionFactoryInstance();
-			Session session = factory.openSession();
-			VideoCall videoCall = (VideoCall) session.get(VideoCall.class, videoCallId);
-			
+		factory = InstanceUtils.getSessionFactoryInstance();
+		Session session = factory.openSession();
+		VideoCall videoCall = (VideoCall) session.get(VideoCall.class,
+				videoCallId);
+
 		return videoCall;
 	}
 
 	@Override
 	public void addDevice(Device device) {
-		
-		  factory = InstanceUtils.getSessionFactoryInstance();
-			Session session = factory.openSession();
-			
-			Member m =(Member) session.get(Member.class,1);
-			m.getDevice().add(device);	
-			Transaction tx = session.beginTransaction();
-			session.saveOrUpdate(m);
-			tx.commit();
-	
+
+		factory = InstanceUtils.getSessionFactoryInstance();
+		Session session = factory.openSession();
+
+		Member m = (Member) session.get(Member.class, 1);
+		m.getDevice().add(device);
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(m);
+		tx.commit();
+
 	}
 
 	@Override
@@ -60,33 +66,32 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public Device findByDeviceToken(String deviceToken) {
-		
+
 		factory = InstanceUtils.getSessionFactoryInstance();
 		Session session = factory.openSession();
-		    Query query =
-		        session
-		            .createQuery("select device from Device device where device.deviceToken = :token");
-		    query.setParameter("token", deviceToken);
-		    return (Device) query.uniqueResult();
+		Query query = session
+				.createQuery("select device from Device device where device.deviceToken = :token");
+		query.setParameter("token", deviceToken);
+		return (Device) query.uniqueResult();
 	}
 
 	@Override
-	public String getDeviceToken() {
+	public List<String> getDeviceToken() {
 		factory = InstanceUtils.getSessionFactoryInstance();
 		Session session = factory.openSession();
-		    Query query =
-		        session
-		            .createQuery("select device from Device device where device.deviceToken = :token");
-		    query.setParameter("token", "6d97f5acadb84c48c3730b815e4edd44900d955af3cfa9ede06e17981a291153");
-		    
-		   Device device = (Device) query.uniqueResult();
-		  
-		    
-		return  device.getDeviceToken();
+
+		Member m = (Member) session.get(Member.class, 1);
+		Set<Device> devises = m.getDevice();
+
+		Iterator<Device> it = devises.iterator();
+		List<String> allDeviceTokens = new ArrayList<String>();
+
+		while (it.hasNext()) {
+			Device deviceToken = (Device) it.next();
+			allDeviceTokens.add(deviceToken.getDeviceToken());
+		}
+
+		return allDeviceTokens;
 	}
-	
-
-
-	
 
 }

@@ -10,27 +10,27 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Success extends APIResponse {
-	
-	 @JsonProperty
-	  private Map<String, Object> data;
-	  public static final Success EMPTY = new Success();
 
-	  /**
-	   * Constructor for success response with status and data.
-	   * 
-	   * @param status
-	   * @param data
-	   */
-	  public Success(Map<String, Object> data) {
-	    super(ResponseStatus.Status.OK);
-	    this.data = data;
-	  }
+	@JsonProperty
+	private Map<String, Object> data;
+	public static final Success EMPTY = new Success();
 
-	  /**
-	   * Empty success response
-	   */
-	  public Success() {
-	    super(ResponseStatus.Status.OK);
-	    this.data = new HashMap<String, Object>();
-	  }
+	/**
+	 * Constructor for success response with status and data.
+	 * 
+	 * @param status
+	 * @param data
+	 */
+	public Success(Map<String, Object> data) {
+		super(ResponseStatus.Status.OK);
+		this.data = data;
+	}
+
+	/**
+	 * Empty success response
+	 */
+	public Success() {
+		super(ResponseStatus.Status.OK);
+		this.data = new HashMap<String, Object>();
+	}
 }

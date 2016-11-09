@@ -7,11 +7,12 @@
 		<id name="id" column="ID">
 			<generator class="increment" />
 		</id>
-		
-		<property name="caller" column="Caller_Id"  />
+
+		<property name="caller" column="Caller_Id" />
 		<property name="receiver" column="Receiver_Id" />
 		<property name="sessionId" column="Session_Id" />
-		<property name="callerToken" column="Caller_Token" type="string" length="1000"/>
+		<property name="callerToken" column="Caller_Token" type="string"
+			length="1000" />
 		<property name="receiverToken" column="Receiver_Token" />
 		<property name="whenCreated" column="whenCreated" />
 	</class>

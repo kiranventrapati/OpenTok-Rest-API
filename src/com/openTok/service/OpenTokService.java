@@ -1,5 +1,7 @@
 package com.openTok.service;
 
+import java.util.List;
+
 import com.openTok.forms.MobileForm;
 import com.openTok.model.Device;
 import com.openTok.model.Member;
@@ -20,7 +22,7 @@ public interface OpenTokService
 	
 	void addMember(Member m);
 
-	String getDeviceToken();
+	List<String> getDeviceToken();
 
 	
 }

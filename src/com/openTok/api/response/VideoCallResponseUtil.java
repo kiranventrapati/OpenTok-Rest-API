@@ -28,7 +28,7 @@ public class VideoCallResponseUtil {
 		general.put("sessionId", videoCall.getSessionId());
 		general.put("receiverToken", videoCall.getReceiverToken());
 		data.put("general", general);
-		
+
 	}
 
 }

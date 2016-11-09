@@ -2,9 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.openTok.model.Device" 
-    	table="DEVICE">
-    	<id name="id" type="long">
+	<class name="com.openTok.model.Device" table="DEVICE">
+		<id name="id" type="long">
 			<column name="ID" />
 			<generator class="identity" />
 		</id>
@@ -23,13 +22,13 @@
 				<!-- needed so that the enum name is stored in the db -->
 				<param name="type">12</param>
 			</type>
-		</property>		
+		</property>
 		<property name="whenCreated" type="timestamp">
-			<column name="WHEN_CREATED" length="19" not-null="true"/>
+			<column name="WHEN_CREATED" length="19" not-null="true" />
 		</property>
 		<property name="tlm" type="timestamp" update="false">
-			<column name="TLM" length="19" not-null="true"/>
+			<column name="TLM" length="19" not-null="true" />
 		</property>
-    </class>
+	</class>
 </hibernate-mapping>
 

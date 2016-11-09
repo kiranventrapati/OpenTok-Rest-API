@@ -2,6 +2,7 @@ package com.openTok.controller;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,7 +120,7 @@ public class OpenTokController {
 			@Context HttpServletResponse response) {
 
 		OpenTokService openTokService = new OpenTokServiceImpl();
-		String deviceToken = openTokService.getDeviceToken();
+		List<String> deviceTokens = openTokService.getDeviceToken();
 		try {
 
 			ApnsService service = null;
@@ -140,8 +141,12 @@ public class OpenTokController {
 						.alertBody(jsonData)
 						.localizedKey("Soon you will recieve Video Call ")
 						.toString();
-				ApnsNotification ser = service.push(deviceToken, payload);
-				System.out.println(ser);
+				for (String deviceToken : deviceTokens) {
+
+					ApnsNotification ser = service.push(deviceToken, payload);
+					System.out.println(ser);
+				}
+
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

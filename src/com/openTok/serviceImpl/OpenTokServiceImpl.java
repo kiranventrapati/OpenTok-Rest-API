@@ -1,6 +1,7 @@
 package com.openTok.serviceImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import com.openTok.dao.DAO;
 import com.openTok.dao.DAOFactory;
@@ -53,15 +54,13 @@ public class OpenTokServiceImpl implements OpenTokService {
 	public void addDevice(MobileForm mobileForm) {
 		DAO dao = DAOFactory.daoImplInstance();
 		Device device = new Device();
-        device.setDeviceToken(mobileForm.getDeviceToken());
-        device.setDeviceType(mobileForm.getDeviceType());
-        
-        device.setTlm(new Date());
-        device.setWhenCreated(new Date());
-        device.setDerivedOsType(mobileForm.getOsType());
-        dao.addDevice(device);
-        
-		
+		device.setDeviceToken(mobileForm.getDeviceToken());
+		device.setDeviceType(mobileForm.getDeviceType());
+
+		device.setTlm(new Date());
+		device.setWhenCreated(new Date());
+		device.setDerivedOsType(mobileForm.getOsType());
+		dao.addDevice(device);
 
 	}
 
@@ -76,18 +75,14 @@ public class OpenTokServiceImpl implements OpenTokService {
 	public void addMember(Member m) {
 		DAO dao = DAOFactory.daoImplInstance();
 		dao.addMember(m);
-		
+
 	}
 
 	@Override
-	public String getDeviceToken() {
+	public List<String> getDeviceToken() {
 		DAO dao = DAOFactory.daoImplInstance();
-		String deviceToken = dao.getDeviceToken();
-		return deviceToken;
-		
+		List<String> allDeviceTokens = dao.getDeviceToken();
+		return allDeviceTokens;
 	}
-
-
-	
 
 }
