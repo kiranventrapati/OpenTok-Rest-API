@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,8 +21,8 @@ import com.notnoop.apns.ApnsService;
 import com.openTok.api.response.APIResponse;
 import com.openTok.api.response.Success;
 import com.openTok.api.response.VideoCallResponseUtil;
+import com.openTok.constants.VideoCallConstants;
 import com.openTok.forms.MobileForm;
-import com.openTok.model.Device;
 import com.openTok.model.Member;
 import com.openTok.model.VideoCall;
 import com.openTok.service.OpenTokService;
@@ -34,16 +33,6 @@ import com.opentok.exception.OpenTokException;
 @Controller
 @RequestMapping(value = "/openTok", produces = "application/json")
 public class OpenTokController {
-
-	// public static final int API_KEY = 45707382;
-	// public static final String API_SECRET_KEY =
-	// "b42f821e3467659b773f4fd9421bce758a4f037a";
-
-	@Value("${apiKey}")
-	int apiKey;
-
-	@Value("${secrectKey}")
-	String secrectKey;
 
 	@RequestMapping(value = "/addMember", method = RequestMethod.POST)
 	public @ResponseBody APIResponse addMember(
@@ -68,13 +57,13 @@ public class OpenTokController {
 			@Context HttpServletResponse response) throws OpenTokException {
 
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		OpenTok opentok = new OpenTok(apiKey, secrectKey);
-		// OpenTok opentok = new OpenTok(API_KEY, API_SECRET_KEY);
+		OpenTok opentok = new OpenTok(VideoCallConstants.APIKEY,
+				VideoCallConstants.SECRECTKEY);
 		OpenTokService openTokService = new OpenTokServiceImpl();
 		VideoCall videoCall = openTokService.createCallerSession(opentok,
 				memberId, recieverId);
-		// VideoCallResponseUtil.getVideoCallResponse(data, videoCall, API_KEY);
-		VideoCallResponseUtil.getVideoCallResponse(data, videoCall, apiKey);
+		VideoCallResponseUtil.getVideoCallResponse(data, videoCall,
+				VideoCallConstants.APIKEY);
 		return new Success(data);
 	}
 
@@ -86,7 +75,8 @@ public class OpenTokController {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		OpenTokService openTokService = new OpenTokServiceImpl();
 		VideoCall videoCall = openTokService.incomingDetails(videoCallId);
-		VideoCallResponseUtil.getReceiveTokenResponse(data, videoCall, apiKey);
+		VideoCallResponseUtil.getReceiveTokenResponse(data, videoCall,
+				VideoCallConstants.APIKEY);
 		return new Success(data);
 	}
 
@@ -111,12 +101,13 @@ public class OpenTokController {
 			@Context HttpServletResponse response) {
 
 		OpenTokService openTokService = new OpenTokServiceImpl();
-		Device device = openTokService.findByDeviceToken("abs");
+		openTokService.addDevice(mobileForm);
+		// Device device = openTokService.findByDeviceToken("abs");
 		// Device device =
 		// openTokService.findByDeviceToken(mobileForm.getDeviceToken());
-		if (device == null) {
-			openTokService.addDevice(mobileForm);
-		}
+		// if (device == null) {
+		// openTokService.addDevice(mobileForm);
+		// }
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
 		return new Success(data);
@@ -135,9 +126,8 @@ public class OpenTokController {
 			String certFullPath = null;
 			String payload = null;
 			File file = null;
-			// String tokenId
-			// ="6d97f5acadb84c48c3730b815e4edd44900d955af3cfa9ede06e17981a291153";
-			certFullPath = "/Users/kirankumar/work/Sample Java Project/src/Certificates.p12";
+			certFullPath = request.getServletContext().getRealPath(
+					VideoCallConstants.CERIFICATE_LOCATION);
 			int badgeCount = 1;
 			file = new File(certFullPath);
 			if (!file.exists()) {
